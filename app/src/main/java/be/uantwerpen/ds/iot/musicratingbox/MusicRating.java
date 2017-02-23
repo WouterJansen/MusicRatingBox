@@ -51,13 +51,13 @@ public class MusicRating extends AppCompatActivity {
     }
 
     public void onClickGreen(View v) {
-        Toast.makeText(MusicRating.this, "You have upvoted this song!", Toast.LENGTH_LONG).show();
+        Toast.makeText(MusicRating.this, "You have upvoted this song!", Toast.LENGTH_SHORT).show();
         songTitleTextView.setText("Upvote");
 //        publishMessage("upvoted");
     }
 
     public void onClickRed(View v) {
-        Toast.makeText(MusicRating.this, "You have downvoted this song!", Toast.LENGTH_LONG).show();
+        Toast.makeText(MusicRating.this, "You have downvoted this song!", Toast.LENGTH_SHORT).show();
         songTitleTextView.setText("Downvote");
 //        publishMessage("downvoted");
     }
