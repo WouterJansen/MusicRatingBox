@@ -20,6 +20,9 @@ import android.widget.Toast;
 public class MusicRating extends AppCompatActivity {
 
     TextView songTitleTextView;
+    TextView songArtistTextView;
+    TextView songAlbumTextView;
+    TextView songYearTextView;
     FloatingActionButton greenButton;
     FloatingActionButton redButton;
 //    MqttAndroidClient mqttAndroidClient;
@@ -33,6 +36,9 @@ public class MusicRating extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_music_rating);
         songTitleTextView = (TextView)findViewById(R.id.songTitleTextView);
+        songArtistTextView = (TextView)findViewById(R.id.songArtistTextView);
+        songAlbumTextView = (TextView)findViewById(R.id.songAlbumTextView);
+        songYearTextView = (TextView)findViewById(R.id.songYearTextView);
         greenButton = (FloatingActionButton)findViewById(R.id.greenButton);
         redButton = (FloatingActionButton)findViewById(R.id.redButton);
 
@@ -60,6 +66,9 @@ public class MusicRating extends AppCompatActivity {
     public void onClickGreen(View v) {
         Toast.makeText(MusicRating.this, "You have upvoted this song!", Toast.LENGTH_LONG).show();
         songTitleTextView.setText("Upvote");
+        songArtistTextView.setVisibility(View.VISIBLE);
+        songAlbumTextView.setVisibility(View.VISIBLE);
+        songYearTextView.setVisibility(View.VISIBLE);
         disableButtons();
 //      publishMessage("upvoted");
     }
@@ -67,6 +76,9 @@ public class MusicRating extends AppCompatActivity {
     public void onClickRed(View v) {
         Toast.makeText(MusicRating.this, "You have downvoted this song!", Toast.LENGTH_LONG).show();
         songTitleTextView.setText("Downvote");
+        songArtistTextView.setVisibility(View.VISIBLE);
+        songAlbumTextView.setVisibility(View.VISIBLE);
+        songYearTextView.setVisibility(View.VISIBLE);
         disableButtons();
 //      publishMessage("downvoted");
     }
