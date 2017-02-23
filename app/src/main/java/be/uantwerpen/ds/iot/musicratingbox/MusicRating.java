@@ -1,5 +1,8 @@
 package be.uantwerpen.ds.iot.musicratingbox;
 
+import android.content.res.ColorStateList;
+import android.graphics.Color;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,6 +20,8 @@ import android.widget.Toast;
 public class MusicRating extends AppCompatActivity {
 
     TextView songTitleTextView;
+    FloatingActionButton greenButton;
+    FloatingActionButton redButton;
 //    MqttAndroidClient mqttAndroidClient;
 //    final String serverUri = "tcp://test.mosquitto.org:1883";
 //    String clientId = MqttClient.generateClientId();
@@ -28,6 +33,8 @@ public class MusicRating extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_music_rating);
         songTitleTextView = (TextView)findViewById(R.id.songTitleTextView);
+        greenButton = (FloatingActionButton)findViewById(R.id.greenButton);
+        redButton = (FloatingActionButton)findViewById(R.id.redButton);
 
 /*        mqttAndroidClient = new MqttAndroidClient(getApplicationContext(), serverUri, clientId);
 
@@ -53,13 +60,36 @@ public class MusicRating extends AppCompatActivity {
     public void onClickGreen(View v) {
         Toast.makeText(MusicRating.this, "You have upvoted this song!", Toast.LENGTH_LONG).show();
         songTitleTextView.setText("Upvote");
-//        publishMessage("upvoted");
+        disableButtons();
+//      publishMessage("upvoted");
     }
 
     public void onClickRed(View v) {
         Toast.makeText(MusicRating.this, "You have downvoted this song!", Toast.LENGTH_LONG).show();
         songTitleTextView.setText("Downvote");
-//        publishMessage("downvoted");
+        disableButtons();
+//      publishMessage("downvoted");
+    }
+
+    public void disableButtons(){
+        greenButton.setBackgroundTintList(ColorStateList.valueOf(Color.GRAY));
+        redButton.setBackgroundTintList(ColorStateList.valueOf(Color.GRAY));
+        greenButton.setEnabled(false);
+        redButton.setEnabled(false);
+        greenButton.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                greenButton.setEnabled(true);
+                greenButton.setBackgroundTintList(ColorStateList.valueOf(Color.rgb(36,163,8)));
+            }
+        }, 5000);
+        redButton.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                redButton.setEnabled(true);
+                redButton.setBackgroundTintList(ColorStateList.valueOf(Color.rgb(163,8,8)));
+            }
+        }, 5000);
     }
 
 //    public void subscribeToTopic(){

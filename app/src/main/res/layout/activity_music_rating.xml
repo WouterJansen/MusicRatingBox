@@ -65,28 +65,27 @@
         app:fabSize="mini"
         app:srcCompat="@drawable/ic_thumb_down_black_24dp"
         android:id="@+id/redButton"
-        app:backgroundTint="@android:color/holo_red_light"
+        app:backgroundTint="#a30808"
         android:tint="@android:color/background_light"
         android:onClick="onClickRed"
         android:layout_alignTop="@+id/greenButton"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginRight="8dp"
-        android:layout_marginEnd="8dp" />
+        android:layout_alignParentEnd="true" />
 
     <android.support.design.widget.FloatingActionButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:clickable="true"
-        app:fabSize="mini"
         app:srcCompat="@drawable/ic_thumb_up_black_24dp"
         android:id="@+id/greenButton"
         android:onClick="onClickGreen"
-        app:backgroundTint="@android:color/holo_green_dark"
+        app:backgroundTint="#24a308"
         android:tint="@android:color/background_light"
+        android:layout_marginBottom="53dp"
         android:layout_alignParentBottom="true"
-        android:layout_marginRight="20dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="54dp" />
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        app:fabSize="normal"
+        android:scaleType="center" />
 
 </RelativeLayout>
