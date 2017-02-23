@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Music Rating Box</string>
+    <string name="artist">Artist</string>
+    <string name="no_song_currently_playing">No Song Currently Playing</string>
+    <string name="album">Album</string>
+    <string name="year">Year</string>
+</resources>

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_music_rating"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="be.uantwerpen.ds.iot.musicratingbox.MusicRating">
+
+    <TextView
+        android:text="@string/year"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/songYearTextView"
+        android:textAlignment="center"
+        android:layout_marginTop="100dp"
+        android:layout_alignRight="@+id/songAlbumTextView"
+        android:layout_alignEnd="@+id/songAlbumTextView"
+        android:layout_alignLeft="@+id/songAlbumTextView"
+        android:layout_alignStart="@+id/songAlbumTextView" />
+
+    <TextView
+        android:text="@string/artist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/songArtistTextView"
+        android:textAlignment="center"
+        android:layout_marginTop="40dp"
+        android:layout_alignRight="@+id/songTitleTextView"
+        android:layout_alignEnd="@+id/songTitleTextView"
+        android:layout_alignLeft="@+id/songTitleTextView"
+        android:layout_alignStart="@+id/songTitleTextView" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/no_song_currently_playing"
+        android:id="@+id/songTitleTextView"
+        android:layout_marginTop="10dp"
+        android:textStyle="normal|bold"
+        android:textAlignment="center"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:text="@string/album"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="70dp"
+        android:id="@+id/songAlbumTextView"
+        android:textAlignment="center"
+        android:layout_alignRight="@+id/songArtistTextView"
+        android:layout_alignEnd="@+id/songArtistTextView"
+        android:layout_alignLeft="@+id/songArtistTextView"
+        android:layout_alignStart="@+id/songArtistTextView" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        app:fabSize="mini"
+        app:srcCompat="@drawable/ic_thumb_down_black_24dp"
+        android:id="@+id/redButton"
+        app:backgroundTint="@android:color/holo_red_light"
+        android:tint="@android:color/background_light"
+        android:onClick="onClickRed"
+        android:layout_alignTop="@+id/greenButton"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="8dp"
+        android:layout_marginEnd="8dp" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        app:fabSize="mini"
+        app:srcCompat="@drawable/ic_thumb_up_black_24dp"
+        android:id="@+id/greenButton"
+        android:onClick="onClickGreen"
+        app:backgroundTint="@android:color/holo_green_dark"
+        android:tint="@android:color/background_light"
+        android:layout_alignParentBottom="true"
+        android:layout_marginRight="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="54dp" />
+
+</RelativeLayout>
