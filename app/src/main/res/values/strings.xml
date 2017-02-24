@@ -4,4 +4,6 @@
     <string name="no_song_currently_playing">No Song Currently Playing</string>
     <string name="album">Album</string>
     <string name="year">Year</string>
+    <string name="cannot_establish_connection">Cannot establish connection</string>
+    <string name="connect">Connect</string>
 </resources>
