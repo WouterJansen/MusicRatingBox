@@ -59,11 +59,20 @@ public class MusicRating extends AppCompatActivity implements MqttCallback {
     public void onClickGreen(View v) {
         Toast.makeText(MusicRating.this, "You have upvoted this song!", Toast.LENGTH_SHORT).show();
         publishMessage("upvoted");
+        songArtistTextView.setVisibility(View.VISIBLE);
+        songAlbumTextView.setVisibility(View.VISIBLE);
+        songYearTextView.setVisibility(View.VISIBLE);
+        disableButtons();
     }
 
     public void onClickRed(View v) {
         Toast.makeText(MusicRating.this, "You have downvoted this song!", Toast.LENGTH_SHORT).show();
         publishMessage("downvoted");
+        songArtistTextView.setVisibility(View.VISIBLE);
+        songAlbumTextView.setVisibility(View.VISIBLE);
+        songYearTextView.setVisibility(View.VISIBLE);
+        disableButtons();
+
     }
 
     public void subscribeToTopic(){
@@ -103,10 +112,33 @@ public class MusicRating extends AppCompatActivity implements MqttCallback {
     @Override
     public void messageArrived(String s, MqttMessage mqttMessage) throws Exception {
         Toast.makeText(MusicRating.this, "The diskjockey is playing a new song", Toast.LENGTH_SHORT).show();
+        songArtistTextView.setVisibility(View.VISIBLE);
+        songAlbumTextView.setVisibility(View.VISIBLE);
+        songYearTextView.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void deliveryComplete(IMqttDeliveryToken iMqttDeliveryToken) {
 
+    }
+    public void disableButtons(){
+        greenButton.setBackgroundTintList(ColorStateList.valueOf(Color.GRAY));
+        redButton.setBackgroundTintList(ColorStateList.valueOf(Color.GRAY));
+        greenButton.setEnabled(false);
+        redButton.setEnabled(false);
+        greenButton.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                greenButton.setEnabled(true);
+                greenButton.setBackgroundTintList(ColorStateList.valueOf(Color.rgb(36,163,8)));
+            }
+        }, 5000);
+        redButton.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                redButton.setEnabled(true);
+                redButton.setBackgroundTintList(ColorStateList.valueOf(Color.rgb(163,8,8)));
+            }
+        }, 5000);
     }
 }
