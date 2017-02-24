@@ -1,5 +1,8 @@
 package be.uantwerpen.ds.iot.musicratingbox;
 
+import android.content.res.ColorStateList;
+import android.graphics.Color;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,9 +20,12 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 public class MusicRating extends AppCompatActivity implements MqttCallback {
 
+    FloatingActionButton greenButton;
+    FloatingActionButton redButton;
     TextView songTitleTextView;
     TextView songArtistTextView;
     TextView songAlbumTextView;
+    TextView songYearTextView;
     MqttAndroidClient mqttAndroidClient;
     final String serverUri = "tcp://broker.hivemq.com:1883";
     String clientId = MqttClient.generateClientId();
@@ -30,10 +36,12 @@ public class MusicRating extends AppCompatActivity implements MqttCallback {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_music_rating);
+        greenButton = (FloatingActionButton)findViewById(R.id.greenButton);
+        redButton = (FloatingActionButton)findViewById(R.id.redButton);
         songTitleTextView = (TextView)findViewById(R.id.songTitleTextView);
         songArtistTextView = (TextView)findViewById(R.id.songArtistTextView);
         songAlbumTextView = (TextView)findViewById(R.id.songAlbumTextView);
-
+        songYearTextView = (TextView)findViewById(R.id.songAlbumTextView);
         mqttAndroidClient = new MqttAndroidClient(getApplicationContext(), serverUri, clientId);
         mqttAndroidClient.setCallback(MusicRating.this);
 
