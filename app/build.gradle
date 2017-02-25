@@ -22,7 +22,7 @@ android {
 
 repositories {
     maven {
-        url "https://repo.eclipse.org/content/repositories/paho-snapshots/"
+        url "https://repo.eclipse.org/content/repositories/paho-releases/"
     }
 }
 
@@ -35,8 +35,6 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:design:25.2.0'
     compile "com.android.support:appcompat-v7:21.0.+"
-    compile files('libs/org.eclipse.paho.client.mqttv3-1.0.2.jar')
-    compile files('libs/org.eclipse.paho.android.service-1.1.1.jar')
-//    compile 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.0.2'
-//    compile 'org.eclipse.paho:org.eclipse.paho.android.service:1.0.2'
+    compile 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.1.0'
+    compile 'org.eclipse.paho:org.eclipse.paho.android.service:1.1.1'
 }
