@@ -86,13 +86,13 @@ public class MusicRating extends AppCompatActivity implements MqttCallback {
     public void onClickGreen(View v) {
         Toast.makeText(MusicRating.this, "You have upvoted this song!", Toast.LENGTH_SHORT).show();
         publishMessage(songID + "1");
-        timeoutButtons(5000);
+        timeoutButtons(2000);
     }
 
     public void onClickRed(View v) {
         Toast.makeText(MusicRating.this, "You have downvoted this song!", Toast.LENGTH_SHORT).show();
         publishMessage(songID + "0");
-        timeoutButtons(5000);
+        timeoutButtons(2000);
 
     }
 
@@ -147,7 +147,6 @@ public class MusicRating extends AppCompatActivity implements MqttCallback {
             songArtistTextView.setText("");
         }
         if(songParts[3] != ""){
-            Toast.makeText(MusicRating.this, songParts[4], Toast.LENGTH_SHORT).show();
             if(songParts[4] != ""){
                 songAlbumTextView.setText(songParts[3] + "(" + songParts[4] + ")");
             }else{
