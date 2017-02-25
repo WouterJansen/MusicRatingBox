@@ -104,4 +104,32 @@
         android:layout_above="@+id/reconnectButton"
         android:layout_centerHorizontal="true" />
 
+
+
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/songAlbumCardView"
+        android:visibility="invisible"
+        android:scaleType="centerCrop"
+        android:layout_width="220dp"
+        android:layout_height="220dp"
+        android:layout_below="@+id/songAlbumTextView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="17dp">
+
+        <ImageView
+            app:srcCompat="@drawable/ic_headset_black_35dp"
+            android:id="@+id/songAlbumImageView"
+            android:scaleX="5"
+            android:scaleY="5"
+            android:visibility="invisible"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:cropToPadding="false"
+            android:scaleType="centerInside"
+            android:adjustViewBounds="false" />
+
+    </android.support.v7.widget.CardView>
+
+
 </RelativeLayout>

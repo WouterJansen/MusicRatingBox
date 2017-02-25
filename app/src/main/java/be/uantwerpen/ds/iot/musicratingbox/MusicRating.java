@@ -2,12 +2,17 @@ package be.uantwerpen.ds.iot.musicratingbox;
 
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
+import android.os.StrictMode;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import org.eclipse.paho.android.service.MqttAndroidClient;
@@ -19,6 +24,13 @@ import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
+import java.io.InputStream;
+import java.net.URL;
+
+import de.umass.lastfm.Album;
+import de.umass.lastfm.Caller;
+import de.umass.lastfm.ImageSize;
+
 public class MusicRating extends AppCompatActivity implements MqttCallback {
 
     FloatingActionButton greenButton;
@@ -28,16 +40,22 @@ public class MusicRating extends AppCompatActivity implements MqttCallback {
     TextView songAlbumTextView;
     TextView reconnectTextView;
     Button reconnectButton;
+    ImageView songAlbumImageView;
+    CardView songAlbumCardView;
     final String serverUri = "tcp://broker.hivemq.com:1883";
     String clientId = MqttClient.generateClientId();
     final String subscriptionTopic = "songInformation";
     final String publishTopic = "songVote";
     MqttAndroidClient mqttAndroidClient;
     String songID;
+    String lastFMKey = "3667c2d5a53fa2b4b2ef2533fbc53c64";
+    String lastFMUser = "MRB";
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_music_rating);
         greenButton = (FloatingActionButton)findViewById(R.id.greenButton);
@@ -48,9 +66,14 @@ public class MusicRating extends AppCompatActivity implements MqttCallback {
         songTitleTextView = (TextView)findViewById(R.id.songTitleTextView);
         songArtistTextView = (TextView)findViewById(R.id.songArtistTextView);
         songAlbumTextView = (TextView)findViewById(R.id.songAlbumTextView);
+        songAlbumImageView = (ImageView)findViewById(R.id.songAlbumImageView);
+        songAlbumCardView = (CardView)findViewById(R.id.songAlbumCardView);
         mqttAndroidClient = new MqttAndroidClient(getApplicationContext(), serverUri, clientId);
         mqttAndroidClient.setCallback(MusicRating.this);
         connectMQTT();
+        StrictMode.ThreadPolicy policy = new
+        StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
     }
 
     public void connectMQTT(){
@@ -78,6 +101,7 @@ public class MusicRating extends AppCompatActivity implements MqttCallback {
         }
 
     }
+
 
     public void reconnectMQTT(View v){
         connectMQTT();
@@ -148,15 +172,25 @@ public class MusicRating extends AppCompatActivity implements MqttCallback {
         }
         if(songParts[3] != ""){
             if(songParts[4] != ""){
-                songAlbumTextView.setText(songParts[3] + "(" + songParts[4] + ")");
+                songAlbumTextView.setText(songParts[3] + " (" + songParts[4] + ")");
             }else{
                 songAlbumTextView.setText(songParts[3]);
             }
-
         }else {
             songAlbumTextView.setText("");
         }
         songID = songParts[0];
+        Caller.getInstance().setUserAgent("tst");
+        Caller.getInstance().setCache(null);
+            Album songAlbum = Album.getInfo(songParts[2],songParts[3],lastFMKey);
+        if(songAlbum == null){
+            Log.d("MusicRating","ddd");
+            songAlbumImageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_headset_black_35dp));
+        }else{
+            String songAlbumCoverURL = songAlbum.getImageURL(ImageSize.EXTRALARGE);
+            Drawable songAlbumCover = LoadImageFromWebOperations(songAlbumCoverURL);
+            songAlbumImageView.setImageDrawable(songAlbumCover);
+        }
     }
 
     @Override
@@ -177,6 +211,8 @@ public class MusicRating extends AppCompatActivity implements MqttCallback {
         songTitleTextView.setVisibility(View.VISIBLE);
         songArtistTextView.setVisibility(View.VISIBLE);
         songAlbumTextView.setVisibility(View.VISIBLE);
+        songAlbumCardView.setVisibility(View.VISIBLE);
+        songAlbumImageView.setVisibility(View.VISIBLE);
     }
 
     public void disableButtons(){
@@ -193,5 +229,16 @@ public class MusicRating extends AppCompatActivity implements MqttCallback {
         redButton.setEnabled(true);
         greenButton.setBackgroundTintList(ColorStateList.valueOf(Color.rgb(36,163,8)));
         redButton.setBackgroundTintList(ColorStateList.valueOf(Color.rgb(163,8,8)));
+    }
+
+
+    public static Drawable LoadImageFromWebOperations(String url) {
+        try {
+            InputStream is = (InputStream) new URL(url).getContent();
+            Drawable d = Drawable.createFromStream(is, "src name");
+            return d;
+        } catch (Exception e) {
+            return null;
+        }
     }
 }
