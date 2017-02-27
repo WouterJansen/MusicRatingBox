@@ -50,12 +50,11 @@ public class MusicRating extends AppCompatActivity implements MqttCallback {
     String songID;
     String lastFMKey = "3667c2d5a53fa2b4b2ef2533fbc53c64";
     String lastFMUser = "MRB";
+    int votesCounter = 0;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_music_rating);
         greenButton = (FloatingActionButton)findViewById(R.id.greenButton);
@@ -102,7 +101,6 @@ public class MusicRating extends AppCompatActivity implements MqttCallback {
 
     }
 
-
     public void reconnectMQTT(View v){
         connectMQTT();
     }
@@ -110,14 +108,25 @@ public class MusicRating extends AppCompatActivity implements MqttCallback {
     public void onClickGreen(View v) {
         Toast.makeText(MusicRating.this, "You have upvoted this song!", Toast.LENGTH_SHORT).show();
         publishMessage(songID + "1");
-        timeoutButtons(2000);
+        votesCounter++;
+        if(votesCounter >= 5) {
+            disableButtons();
+        }
+        else {
+            timeoutButtons(2000);
+        }
     }
 
     public void onClickRed(View v) {
         Toast.makeText(MusicRating.this, "You have downvoted this song!", Toast.LENGTH_SHORT).show();
         publishMessage(songID + "0");
-        timeoutButtons(2000);
-
+        votesCounter++;
+        if(votesCounter > 5) {
+            disableButtons();
+        }
+        else {
+            timeoutButtons(2000);
+        }
     }
 
     public void subscribeToTopic(){
@@ -158,8 +167,9 @@ public class MusicRating extends AppCompatActivity implements MqttCallback {
 
     @Override
     public void messageArrived(String s, MqttMessage mqttMessage) throws Exception {
-        enableButtons();
         setSongInformation(mqttMessage);
+        votesCounter = 0;
+        enableButtons();
     }
 
     private void setSongInformation(MqttMessage mqttMessage){
