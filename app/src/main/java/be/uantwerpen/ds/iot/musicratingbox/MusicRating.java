@@ -1,12 +1,8 @@
 package be.uantwerpen.ds.iot.musicratingbox;
 
-import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.net.wifi.WifiInfo;
-import android.net.wifi.WifiManager;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.StrictMode;
 import android.support.design.widget.FloatingActionButton;
@@ -24,7 +20,6 @@ import org.eclipse.paho.client.mqttv3.IMqttActionListener;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.IMqttToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
-import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
@@ -48,7 +43,7 @@ public class MusicRating extends AppCompatActivity implements MqttCallback {
     CardView songAlbumCardView;
     //final String serverUri = "tcp://broker.hivemq.com:1883";
     final String serverUri = "tcp://143.129.39.118:1883";
-    String clientID = MqttClient.generateClientId();
+    String clientID;// = MqttClient.generateClientId();
     final String subscriptionTopic = "songInformation";
     final String publishTopic = "songVote";
     MqttAndroidClient mqttAndroidClient;
@@ -56,7 +51,6 @@ public class MusicRating extends AppCompatActivity implements MqttCallback {
     String lastFMKey = "3667c2d5a53fa2b4b2ef2533fbc53c64";
     String lastFMUser = "MRB";
     int votesCounter = 0;
-    String macAddress = "0000";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +61,9 @@ public class MusicRating extends AppCompatActivity implements MqttCallback {
         reconnectButton = (Button)findViewById(R.id.reconnectButton);
         reconnectTextView = (TextView)findViewById(R.id.reconnectTextView);
         disableButtons();
+        int hash = Build.SERIAL.hashCode();
+        clientID = String.valueOf(hash).substring(0,4);
+        Log.d("MAC","Serial: " + clientID);
         songTitleTextView = (TextView)findViewById(R.id.songTitleTextView);
         songArtistTextView = (TextView)findViewById(R.id.songArtistTextView);
         songAlbumTextView = (TextView)findViewById(R.id.songAlbumTextView);
@@ -78,11 +75,6 @@ public class MusicRating extends AppCompatActivity implements MqttCallback {
         StrictMode.ThreadPolicy policy = new
         StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
-
-        WifiManager wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
-        WifiInfo wInfo = wifiManager.getConnectionInfo();
-        macAddress = wInfo.getMacAddress();
-        clientID = clientID.substring(15);
     }
 
     public void connectMQTT(){
@@ -92,7 +84,6 @@ public class MusicRating extends AppCompatActivity implements MqttCallback {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
                     enableText();
-                    enableButtons();
                     reconnectButton.setVisibility(View.INVISIBLE);
                     reconnectTextView.setVisibility(View.INVISIBLE);
                     subscribeToTopic();
@@ -117,10 +108,6 @@ public class MusicRating extends AppCompatActivity implements MqttCallback {
 
     public void onClickGreen(View v) {
         Toast.makeText(MusicRating.this, "You have upvoted this song!", Toast.LENGTH_SHORT).show();
-        //String serial = Build.SERIAL;
-        //int id = Integer.parseInt(serial);
-        //Toast.makeText(MusicRating.this, x, Toast.LENGTH_LONG).show();
-        Log.d("MAC","MAC ADDRESS: " + macAddress);
         publishMessage(clientID + "#%" + songID + "#%" + "1");
         votesCounter++;
         if(votesCounter >= 5) {
