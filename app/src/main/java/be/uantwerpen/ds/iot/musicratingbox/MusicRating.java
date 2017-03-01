@@ -61,7 +61,7 @@ public class MusicRating extends AppCompatActivity implements MqttCallback {
         reconnectButton = (Button)findViewById(R.id.reconnectButton);
         reconnectTextView = (TextView)findViewById(R.id.reconnectTextView);
         disableButtons();
-        int hash = Build.SERIAL.hashCode();
+        int hash = Build.SERIAL.hashCode() & 0xfffffff;
         clientID = String.valueOf(hash).substring(0,4);
         Log.d("MAC","Serial: " + clientID);
         songTitleTextView = (TextView)findViewById(R.id.songTitleTextView);
@@ -72,8 +72,7 @@ public class MusicRating extends AppCompatActivity implements MqttCallback {
         mqttAndroidClient = new MqttAndroidClient(getApplicationContext(), serverUri, clientID);
         mqttAndroidClient.setCallback(MusicRating.this);
         connectMQTT();
-        StrictMode.ThreadPolicy policy = new
-        StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
     }
 
