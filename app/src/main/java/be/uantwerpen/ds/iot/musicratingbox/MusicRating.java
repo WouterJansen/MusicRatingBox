@@ -29,6 +29,7 @@ import java.net.URL;
 import de.umass.lastfm.Album;
 import de.umass.lastfm.Caller;
 import de.umass.lastfm.ImageSize;
+import de.umass.lastfm.Track;
 
 public class MusicRating extends AppCompatActivity implements MqttCallback {
 
@@ -175,6 +176,8 @@ public class MusicRating extends AppCompatActivity implements MqttCallback {
     private void setSongInformation(MqttMessage mqttMessage){
         String[] songParts = mqttMessage.toString().split("#%");
         songTitleTextView.setText(songParts[1]);
+        Track songTrack = Track.getInfo(songParts[2],songParts[1],lastFMKey);
+        songParts[3]= songTrack.getAlbum();
         if(songParts[2] != ""){
             songArtistTextView.setText(songParts[2]);
         }else{
@@ -192,12 +195,13 @@ public class MusicRating extends AppCompatActivity implements MqttCallback {
         songID = songParts[0];
         Caller.getInstance().setUserAgent("tst");
         Caller.getInstance().setCache(null);
-            Album songAlbum = Album.getInfo(songParts[2],songParts[3],lastFMKey);
-        if(songAlbum == null){
-            Log.d("MusicRating","ddd");
+
+        if(songTrack== null){
             songAlbumImageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_headset_black_35dp));
         }else{
-            String songAlbumCoverURL = songAlbum.getImageURL(ImageSize.EXTRALARGE);
+            String songAlbumCoverURL = songTrack.getImageURL(ImageSize.EXTRALARGE);
+
+
             Drawable songAlbumCover = LoadImageFromWebOperations(songAlbumCoverURL);
             songAlbumImageView.setImageDrawable(songAlbumCover);
         }
