@@ -20,6 +20,7 @@ import org.eclipse.paho.client.mqttv3.IMqttActionListener;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.IMqttToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
+import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
@@ -52,6 +53,9 @@ public class MusicRating extends AppCompatActivity implements MqttCallback {
     String lastFMKey = "3667c2d5a53fa2b4b2ef2533fbc53c64";
     String lastFMUser = "MRB";
     int votesCounter = 0;
+    String username = "MRB";
+    String password = "pgo3";
+    MqttConnectOptions options = new MqttConnectOptions();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +68,6 @@ public class MusicRating extends AppCompatActivity implements MqttCallback {
         disableButtons();
         int hash = Build.SERIAL.hashCode() & 0xfffffff;
         clientID = String.valueOf(hash).substring(0,4);
-        Log.d("MAC","Serial: " + clientID);
         songTitleTextView = (TextView)findViewById(R.id.songTitleTextView);
         songArtistTextView = (TextView)findViewById(R.id.songArtistTextView);
         songAlbumTextView = (TextView)findViewById(R.id.songAlbumTextView);
@@ -79,7 +82,9 @@ public class MusicRating extends AppCompatActivity implements MqttCallback {
 
     public void connectMQTT(){
         try {
-            IMqttToken token = mqttAndroidClient.connect();
+            options.setUserName(username);
+            options.setPassword(password.toCharArray());
+            IMqttToken token = mqttAndroidClient.connect(options);
             token.setActionCallback(new IMqttActionListener() {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
